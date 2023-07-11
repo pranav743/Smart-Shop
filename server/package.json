@@ -8,8 +8,35 @@
     "joi": "^17.9.2",
     "joi-password-complexity": "^5.1.0",
     "jsonwebtoken": "^9.0.1",
+    "mongodb": "^5.7.0",
     "mongoose": "^7.3.2",
     "nodemailer": "^6.9.3",
     "nodemon": "^3.0.1"
-  }
+  },
+  "name": "smart-shop",
+  "version": "1.0.0",
+  "description": "Server of the Smart Shop Shopping website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server\\index",
+    "dev": "nodemon server\\index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pranav743/Smart-Shop.git"
+  },
+  "keywords": [
+    "amazon",
+    "flipkart",
+    "e-commerce",
+    "shopping",
+    "digital"
+  ],
+  "author": "Pranav Patil",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pranav743/Smart-Shop/issues"
+  },
+  "homepage": "https://github.com/pranav743/Smart-Shop#readme"
 }

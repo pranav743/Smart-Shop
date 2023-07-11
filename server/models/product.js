@@ -4,14 +4,14 @@ const mongoose = require("mongoose")
 const reviewSchema = new mongoose.Schema({
     rating: {
       type: Number,
-      required: true,
-      integer: true,
+      required: [true, "Rating is required"],
+      integer: [true, "Rating can only be an Integer."],
       min: 0,
       max: 10
     },
     comment: {
       type: String,
-      required: true,
+      required: false,
       maxlength: [500, "Max length is 500"]
     },
     reviewer: {
@@ -31,6 +31,16 @@ const reviewSchema = new mongoose.Schema({
   });
 
 const productSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: [true, "Title is mandatory"],
+        maxlength: [100, "Max title length is 100"]
+    },
+    tags: {
+        type: [String],
+        required: false,
+        default: null
+    },
     slug: String,
     price: {
         actual_price: {
@@ -62,9 +72,9 @@ const productSchema = new mongoose.Schema({
         },
         available_quantity: {
             type: Number,
-            integer: true,
+            integer: [true, "Quantity must be an Integer"],
             required: [true, "Enter Quantity"],
-            min: 1,
+            min: [1, "Minimum quantity should be 1"],
         },
         country_of_origin:{
             required: [true, "Enter Country of Origin"],
@@ -93,4 +103,6 @@ const productSchema = new mongoose.Schema({
     reviews: [reviewSchema]
 })
 
-const Product = mongoose.model("product", productSchema);
+const Product = mongoose.model('Product', productSchema);
+
+module.exports = Product;

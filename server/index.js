@@ -2,11 +2,18 @@ const express = require("express");
 const dotenv = require("dotenv").config({ path: './config.env'});
 const app = express();
 const colors = require("colors");
-const connectDB = require('./db');
+const connectDB = require("./database/db");
 const cors = require('cors');
 
 // Importing Routes    Example : const userRoutes = require('./routes/users');
 
+// User
+const users = require("./routes/Users");
+
+
+
+//Admin
+const listProduct = require("./routes/listProduct");
 
 
 
@@ -20,7 +27,7 @@ app.use(cors());
 
 
 // Routes      Example : app.use("/api/users", userRoutes);
-
+app.use("/api/admin/listProduct", listProduct);
 
 
 
