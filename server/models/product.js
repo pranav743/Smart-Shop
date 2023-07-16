@@ -100,6 +100,14 @@ const productSchema = new mongoose.Schema({
             required: [true, "Product Description should not be empty"]
         }    
     },
+    postedAt: {
+        type: Date,
+        default: Date.now
+    },
+    editedAt: {
+        type: Date,
+        default: Date.now
+    },
     reviews: [reviewSchema]
 })
 

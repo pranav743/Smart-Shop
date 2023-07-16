@@ -2,37 +2,33 @@ const express = require("express");
 const router = express.Router()
 const Product = require("../models/product");
 
-const dummyProduct = {
-    title: "Dummy Product | Test Product | Just for Testing purpose",
-    slug: "dummy-product",
-    price: {
-      actual_price: 99.99,
-      discount: 10,
-    },
-    category: {
-      broad_category: "Electronics",
-      sub_category: "Mobile Phones",
-    },
-    details: {
-      brand: "Dummy Brand",
-      available_quantity: 50,
-      country_of_origin: "United States",
-      material: "Plastic",
-      isReturnable: true,
-      imgs: ["image1.jpg", "image2.jpg"],
-      description: "This is a dummy product description.",
-    },
-  };
+function convertToSlug(str) {
+  // Replace spaces with hyphens
+  const slug = str.replace(/\s+/g, '-');
+
+  // Convert to lowercase
+  const lowercaseSlug = slug.toLowerCase();
+
+  return lowercaseSlug;
+}
   
 
 router.post("/", async (req, res) => {
 
   try {
+
+
+    
     const product = {
       ...req.body
+    };
+    const isProduct = await Product.findOne({title: product.title});
+
+    if (isProduct){
+        return res.status(401).json({success: false, msg: "Product already Exists"});
     }
-    // console.log(product);
-    await new Product(product).save();
+    
+    await new Product({...product, slug: convertToSlug(product.title)}).save();
     console.log(`Product '${req.body.title}' Listed Successfully`.blue.bold);
     return res.status(200).json({success: true, msg: "Product Listed Successfully"});
     

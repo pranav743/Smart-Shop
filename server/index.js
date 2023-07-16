@@ -14,6 +14,8 @@ const users = require("./routes/Users");
 
 //Admin
 const listProduct = require("./routes/listProduct");
+const products = require("./routes/products");
+const updateProduct = require("./routes/updateProduct");
 
 
 
@@ -27,7 +29,9 @@ app.use(cors());
 
 
 // Routes      Example : app.use("/api/users", userRoutes);
-app.use("/api/admin/listProduct", listProduct);
+app.use("/api/admin/listproduct", listProduct);
+app.use("/api/admin/products", products);
+app.use("/api/admin/updateproduct", updateProduct);
 
 
 
