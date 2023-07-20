@@ -1,21 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from './AddProduct.module.css';
-import { SimpleGrid, Box, Input, Select, Stack, Textarea, Checkbox, position } from '@chakra-ui/react';
+import { SimpleGrid, Box, Input, Select, Stack, Textarea, Checkbox } from '@chakra-ui/react';
 import ProductListingGuidelines from './uploadGuidelines';
 import {
   Alert,
   AlertIcon,
-  AlertTitle,
-  AlertDescription,
+  // AlertTitle,
 } from '@chakra-ui/react';
+import { DeleteIcon } from '@chakra-ui/icons'
 import axios from 'axios';
 
 
-const CheckFormat = (data) => {
-  var stack = [data];
+const CheckFormat = (data, productDetails) => {
+  console.log(data);
+  if (productDetails.imgs.length > 5){
+    return "You can only select atmost 5 photos"
+  }
+  if (productDetails.imgs.length < 1){
+    return "Please attach Image"
+  }
+  var stack = [data]
+
   while (stack.length > 0) {
     var currentObj = stack.pop();
     for (var key in currentObj) {
+      
       if (typeof currentObj[key] === 'object' && currentObj[key] !== null) {
         stack.push(currentObj[key]);
       } else if (currentObj[key] === '' || currentObj[key] === null || currentObj[key] === undefined) {
@@ -37,6 +46,7 @@ const CheckFormat = (data) => {
 }
 
 const AddProduct = () => {
+  const fileInputRef = useRef(null);
 const [productDetails, setProductDetails] = useState({
     title: '',
     brand: '',
@@ -49,10 +59,12 @@ const [productDetails, setProductDetails] = useState({
     quantity: '',
     description: '',
     agreedToGuidelines: false,
+    imgs: []
     });
 
   
   const [warning, setWarning] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -68,6 +80,16 @@ const [productDetails, setProductDetails] = useState({
     const { value } = e.target;
     setProductDetails((prevDetails) => ({ ...prevDetails, category: value }));
   };
+  const handleFileChange = (event) => {
+    const files = event.target.files;
+    setProductDetails((prevDetails) => ({ ...prevDetails, imgs: [...prevDetails.imgs, ...files] }));
+  };
+
+  const removeImage = (index) => {
+    const updatedImgs = [...productDetails.imgs];
+    updatedImgs.splice(index, 1);
+    setProductDetails({ ...productDetails, imgs: updatedImgs });
+  }
 
   const handleUpload = () => {
     var data = {
@@ -87,31 +109,48 @@ const [productDetails, setProductDetails] = useState({
         available_quantity: parseInt(productDetails.quantity),
         description: productDetails.description,
         isReturnable: false,
-        imgs: ['photo.jpg']
+        // imgs: productDetails.imgs
       }
     };
-    let invalidity = CheckFormat(data);
+
+    let invalidity = CheckFormat(data, productDetails);
+  
     if (invalidity){
       setWarning(invalidity);
     } else if (!productDetails.agreedToGuidelines){
       setWarning("You must check the check box to upload the product !")
     }
     else{
+      
       listProduct(data);
     }
   };
 
   const listProduct = async (data) =>{
+   
     try {
 
-      const url = "http://localhost:5000/api/admin/listproduct"
-      const res = await axios.post(url, data);
-      console.log(res);     
-      clearInput(); 
+      const formData = new FormData();
+      const files = productDetails.imgs
+      for (let i = 0; i < files.length; i++) {
+        formData.append(`files[${i}]`, files[i]);
+      }
+      const options = {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Set the content type to handle form data
+          'Title' : data.title
+        },
+      };
+      formData.append('data', (JSON.stringify(data)));
+      const url = 'http://localhost:5000/api/admin/listproduct';
+      const res = await axios.post(url, formData, options);
+      console.log(res);
+      setSuccess("Product Listed Successfully !")
+      clearInput();
     } catch (error) {
       if (error.response && !error.response.data.success) {
         setWarning(error.response.data.msg);
-      } else if (error.message == 'Network Error'){
+      } else if (error.message === 'Network Error'){
         setWarning("Server Unreachable !");
       }
     }
@@ -130,22 +169,31 @@ const [productDetails, setProductDetails] = useState({
       quantity: '',
       description: '',
       agreedToGuidelines: false,
+      imgs: []
       })
   };
 
   useEffect(() => {
-    let timer;
+    let timer1;
+    let timer2;
 
     if (warning) {
-      timer = setTimeout(() => {
+      timer1 = setTimeout(() => {
         setWarning(false);
       }, 5000);
     }
 
+    if (success) {
+      timer2 = setTimeout(() => {
+        setSuccess(false);
+      }, 5000);
+    }
+
     return () => {
-      clearTimeout(timer);
+      clearTimeout(timer1);
+      clearTimeout(timer2);
     };
-  }, [warning]);
+  }, [warning, success]);
 
   return (
     <>
@@ -155,6 +203,13 @@ const [productDetails, setProductDetails] = useState({
       <Alert status='error'style={{position: 'fixed', zIndex: '3', bottom: '5'}}>
         <AlertIcon />
         {warning}
+      </Alert>
+      }
+      {
+        success && 
+      <Alert status='success'style={{position: 'fixed', zIndex: '3', bottom: '5'}}>
+        <AlertIcon />
+        {success}
       </Alert>
       }
       <div style={{ minHeight: 'calc(100vh - 60px)', width: '100%', marginTop: '60px' }} className={styles.centerAll}>
@@ -168,10 +223,24 @@ const [productDetails, setProductDetails] = useState({
               padding: '10px',
               backgroundColor: '#fff',
               justifyContent: 'center',
+              flexDirection: 'column'
             }}
           >
-            <div style={{ width: '90%' }}>
+            <div style={{ width: '90%', paddingLeft: '3vw' }}>
               <ProductListingGuidelines />
+            </div>
+            <div style={{ width: '95%', backgroundColor: '#fff', margin: '15px' }}>
+           
+              <Stack>
+              {productDetails.imgs.map((img, index) => (
+                <div key={index} className={styles.displayImage}>
+                  <img src={URL.createObjectURL(img)} alt="Not Found" style={{maxHeight: '50px', maxWidth: '50px', minHeight: '50px', minWidth: '50px'}}/>
+                  <p>{JSON.stringify(img.name)}</p>
+                  <DeleteIcon style={{position: 'absolute', right: '10px', top: '20px', cursor: 'pointer'}} onClick={() => removeImage(index)}/>
+                </div>
+                
+              ))}
+              </Stack>
             </div>
           </div>
 
@@ -182,7 +251,8 @@ const [productDetails, setProductDetails] = useState({
                   <Input variant="filled" placeholder="Title of Item" maxW="500px" m="10px 0" name="title" value={productDetails.title} onChange={handleInputChange} />
                 </div>
                 <div>
-                  <Input variant="filled" placeholder="Filled" maxW="500px" m="10px 0" name="filled" value={productDetails.filled} onChange={handleInputChange} />
+                  {/* <Input variant="filled" placeholder="Filled" maxW="500px" m="10px 0" name="filled" value={productDetails.filled} onChange={handleInputChange} /> */}
+                  <Input variant='outline' type="file" accept="image/*" onChange={handleFileChange} ref={fileInputRef} multiple />
                 </div>
                 <div className={styles.centerAll} style={{ margin: '10px 0' }}>
                     <Select variant="flushed" maxW="500px" name="category" value={productDetails.category} onChange={handleSelectChange}>

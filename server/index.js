@@ -5,6 +5,7 @@ const colors = require("colors");
 const connectDB = require("./database/db");
 const cors = require('cors');
 
+
 // Importing Routes    Example : const userRoutes = require('./routes/users');
 
 // User
@@ -25,6 +26,7 @@ const updateProduct = require("./routes/updateProduct");
 // MiddleWare
 app.use(express.json());
 app.use(cors());
+
 
 
 
