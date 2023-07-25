@@ -63,7 +63,11 @@ const productSchema = new mongoose.Schema({
         sub_category: {
             required: false,
             type: String
-        }
+        },
+        slug: {
+            required: false,
+            type:String
+        },
     },
     details: {
         brand: {

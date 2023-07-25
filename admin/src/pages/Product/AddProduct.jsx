@@ -252,7 +252,7 @@ const [productDetails, setProductDetails] = useState({
                 </div>
                 <div>
                   {/* <Input variant="filled" placeholder="Filled" maxW="500px" m="10px 0" name="filled" value={productDetails.filled} onChange={handleInputChange} /> */}
-                  <Input variant='outline' type="file" accept="image/*" onChange={handleFileChange} ref={fileInputRef} multiple />
+                  <Input variant='outline' type="file" accept="image/*" onChange={handleFileChange} ref={fileInputRef} multiple maxW='500px'/>
                 </div>
                 <div className={styles.centerAll} style={{ margin: '10px 0' }}>
                     <Select variant="flushed" maxW="500px" name="category" value={productDetails.category} onChange={handleSelectChange}>

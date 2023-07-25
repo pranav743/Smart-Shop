@@ -1,3 +1,5 @@
+import React, {useState} from 'react'
+
 import {
     Heading,
     Avatar,
@@ -10,13 +12,16 @@ import {
     Badge,
     useColorModeValue,
   } from '@chakra-ui/react';
+  import Carousel from '../../components/Carousel';
+  import EditMenu from '../../components/EditProduct';
   
   export default function SocialProfileSimple(props) {
 
-    const { title, description, category, price, available_quantity, date, _id } = props;
+    const { title, description, category, price, available_quantity, date, _id, folderName, imageName, discount } = props;
     const truncatedDescription = description.length > 70 ? description.slice(0, 70) + '...' : description;
     const quantity = `Quantity : ${available_quantity}`;
     const formattedDate = new Date(date).toLocaleDateString();
+
 
     return (
       <Center py={6} style={{minHeight: '400px'}}>
@@ -30,28 +35,8 @@ import {
           textAlign={'center'}
           m={3}
           >
-          {/* <Avatar
-            size={'xl'}
-            src={
-              'https://picsum.photos/200'
-            }
-            alt={'Product Img'}
-            mb={4}
-            pos={'relative'}
-            _after={{
-              content: '""',
-              w: 4,
-              h: 4,
-              bg: 'green.300',
-              border: '2px solid white',
-              rounded: 'full',
-              pos: 'absolute',
-              bottom: 0,
-              right: 3,
-            }}
-          /> */}
-          <div>
-            <img src="https://picsum.photos/200" alt="Product Photo" width='100%' style={{margin: '0 0 15px 0'}}/>
+          <div style={{height: '200px', width: '100%', display: 'flex', justifyContent: 'center', marginBottom: '7px'}}>
+          <Carousel folderName={folderName} imageName={imageName}/>
           </div>
           <Heading fontSize={'2xl'} fontFamily={'body'}>
             {title}
@@ -95,24 +80,11 @@ import {
   
           <Stack mt={8} direction={'row'} spacing={4}>
             <span style={{width: '130px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>{price}</span>
-            <Button
-              flex={1}
-              fontSize={'sm'}
-              rounded={'full'}
-              bg={'blue.400'}
-              color={'white'}
-              boxShadow={
-                '0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)'
-              }
-              _hover={{
-                bg: 'blue.500',
-              }}
-              _focus={{
-                bg: 'blue.500',
-              }}>
-              Edit
-            </Button>
+            <EditMenu folderName={folderName} imageName={imageName} title= {title} description = {description}  category = {category} price = {price} available_quantity = {available_quantity} date = {date} _id={_id} key={_id} discount={discount}>
+          Edit
+        </EditMenu>
           </Stack>
+          
         </Box>
       </Center>
     );
