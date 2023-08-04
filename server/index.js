@@ -11,6 +11,11 @@ const path = require('path');
 
 // User
 const users = require("./routes/Users");
+const registerUser = require("./routes/registerUser");
+const generateotp = require("./routes/OTP/generate");
+const validateotp = require("./routes/OTP/validate");
+const userauth = require("./routes/auth");
+const afterauth = require("./routes/afterauth");
 
 
 
@@ -37,6 +42,12 @@ app.use("/api/admin/listproduct", listProduct);
 app.use("/api/admin/products", products);
 app.use("/api/admin/updateproduct", updateProduct);
 app.use("/api/admin/searchproduct", searchProduct);
+
+app.use("/api/client/registeruser", registerUser);
+app.use("/api/client/generateotp", generateotp);
+app.use("/api/client/validateotp", validateotp);
+app.use("/api/client/userauth", userauth);
+app.use("/api/client/afterauth", afterauth);
 
 
 

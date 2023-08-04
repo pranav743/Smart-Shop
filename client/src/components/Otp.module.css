@@ -1,0 +1,95 @@
+.background{
+    height: 100vh;
+    width: 100%;
+    background-color: rgb(235, 235, 235);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-size: cover;
+    background-position: center;
+}
+
+
+.container{
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    background-color:  #fff;
+    height: 500px;
+    width: 70vw;
+    max-width: 800px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 5px #000;
+
+}
+
+
+.leftContainer{
+    width: 45%;
+    height: 100%;
+    background-color: aquamarine;
+}
+.rightContainer{
+    width: 55%;
+    height: 100%;
+    /* background-color: rgb(18, 100, 72); */
+}
+
+.inputSpan{
+    height: auto;
+    width: auto;
+    background-color: #bbb;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 0 5px #bbb;
+}
+
+.inputField{
+    height: 40px;
+    width: 220px;
+    padding: 0px 7px;
+    letter-spacing: 1px;
+    border: none;
+    outline: none;
+    background-color: none;
+}
+
+.registerButton{
+    height: 40px;
+    width: 220px;
+    background-image: linear-gradient(60deg, rgb(236, 65, 173),rgb(185, 7, 144));
+    border: none;
+    border-radius: 5px;
+    letter-spacing: 2px;
+    font-size: large;
+    color: #fff;
+    transition: all 0.5s;
+    box-shadow: 0 0 5px #000;
+}
+
+.registerButton:hover{
+    background-image: linear-gradient(60deg, rgb(0, 106, 255, 0.612), rgba(58, 50, 209, 0.612));
+    cursor: pointer;
+    
+    box-shadow: 0 0 15px rgb(0, 106, 255);
+    letter-spacing: 3px;
+
+}
+
+
+@media only screen and (max-width: 900px) {
+    .container{
+        min-width: 320px;
+        width: 65vw;
+    }
+    .leftContainer{
+        display: none;
+    }
+    .rightContainer{
+        width: 100%;
+    }
+}
