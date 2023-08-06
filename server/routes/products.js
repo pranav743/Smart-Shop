@@ -66,9 +66,6 @@ router.get("/suggestions", async (req, res) => {
   }
 });
 
-
-  
-
 router.get("/", async (req, res) => {
 
   try {
@@ -100,7 +97,7 @@ router.get("/", async (req, res) => {
     const limit = parseInt(req.query.limit, 10) || 6;
     const startIndex = (page -1)*limit;
     const endIndex = page*limit;
-    const total = await Product.countDocuments();
+    const total = await Product.countDocuments(query);
 
     query = query.skip(startIndex).limit(limit);
     const pagination = {};
@@ -127,6 +124,72 @@ router.get("/", async (req, res) => {
     return res.status(400).json({success: false, msg: error.message});
   }
    
+});
+
+router.get('/cartitems', async (req, res) => {
+  try {
+    const { _id } = req.query;
+
+    // Split the comma-separated string into an array of _id values
+    const idValues = _id.split(',');
+
+    // Query the database with the array of _id values
+    const products = await Product.find({ _id: { $in: idValues } });
+
+    return res.status(200).json({ success: true, data: products });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ success: false, msg: 'Server error' });
+  }
+});
+
+router.put("/update", async (req, res) => {
+  try {
+    const product_id = req.body._id;
+
+    const product = await Product.findById(product_id);
+
+    if (!product){
+      return res.status(400).json({success: false, data: "No product Found"});
+    }
+    product.price.actual_price = req.body.actual_price;
+    product.price.discount = req.body.discount;
+    product.details.available_quantity = req.body.available_quantity;
+    product.details.description = req.body.description;
+    
+    await product.save();
+
+    return res.status(200).json({ success: true, data: "Updated Product" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ success: false, msg: 'Server error' });
+  }
 })
+
+router.get('/analytics', async (req, res) => {
+  try {
+    // Use the aggregation pipeline to group and count documents by category
+    const categoryCounts = await Product.aggregate([
+      {
+        $group: {
+          _id: '$category.broad_category',
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    // Format the result as an array of { category, count } objects
+    const result = categoryCounts.map((item) => ({
+      category: item._id,
+      count: item.count,
+    }));
+
+    return res.status(200).json({ success: true, data: result });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ success: false, msg: 'Server error' });
+  }
+});
+
 
 module.exports = router;

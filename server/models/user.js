@@ -29,6 +29,18 @@ const userSchema = new mongoose.Schema({
     },
   },
   orders: {
+    cart: [
+      {
+        product_id: {
+          type: String,
+          required: true,
+        },
+        quantity: {
+          type: Number,
+          default: 1
+        }
+      },
+    ],
     current: [
       {
         order_id: {

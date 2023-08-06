@@ -20,7 +20,7 @@ import {
   } from '@chakra-ui/icons';
   import axios from 'axios';
 import CustomerProductCard from '../../components/CustomerProductCard';
-import {Link} from 'react-router-dom'
+import {Link, useParams} from 'react-router-dom'
 
 
 function convertToSlug(str) {
@@ -30,9 +30,15 @@ function convertToSlug(str) {
   const lowercaseSlug = slug.toLowerCase();  
   return lowercaseSlug;
 }
+function replaceAmpersand(str) {
+    return str.replace(/&/g, '%26');
+}
 
-const BrowseProduct = () => {
+const BrowseProduct = (props) => {
     const isFirstRender = useRef(true);
+    const { category } = useParams();
+    
+
 
     const [productDetails, setProductDetails] = useState('');
     const [page, setPage] = useState({
@@ -110,12 +116,14 @@ const BrowseProduct = () => {
         
         try {
           var url = URL;
+        
+          
           if (page_no){
             if (slug){
-              url = URL + `&page=${page_no}&slug=${slug}`;
+              url = URL + `&page=${page_no}&slug=${slug}&category.slug=${replaceAmpersand(category)}`;
             }
             else{
-              url = URL + `&page=${page_no}`;
+              url = URL + `&page=${page_no}&category.slug=${replaceAmpersand(category)}`;
             }
             setPage({...page, current: `${page_no}`})
           }
@@ -126,11 +134,11 @@ const BrowseProduct = () => {
 
           }
           else{
-            url = URL + `&page=1`
+            url = URL + `&page=1&category.slug=${replaceAmpersand(category)}`
             setPage({...page, current: '1'});
           }
           if (searchSlug){
-            url = URL + `&slug=${searchSlug}}`;
+            url = URL + `&slug=${searchSlug}&category.slug=${replaceAmpersand(category)}`;
           }
           
           console.log(url)
@@ -168,7 +176,7 @@ const BrowseProduct = () => {
           }
           
 
-                    
+                  console.log(url)
           setFetching(false)  
 
         } catch (error) {
@@ -191,23 +199,25 @@ const BrowseProduct = () => {
       
 
       useEffect(() => {
-
         let timer;
+        
         if (isFirstRender.current) {
             isFirstRender.current = false;
             GetList();
-          }
+        }
     
         if (warning) {
           timer = setTimeout(() => {
             setWarning(false);
           }, 5000);
         } 
-    
+        else{
+            GetList('1', false);
+        }
         return () => {
           clearTimeout(timer);
         };
-      }, [warning, GetList]);
+      }, [warning, category]);
     
       const centerAll = {
         display: 'flex',
@@ -262,7 +272,7 @@ const BrowseProduct = () => {
         </div>
         <div style={{marginTop: '80px'}}>
         <Text as={'span'} fontWeight={'bold'} fontSize={'3xl'}>
-                   All Products
+                   {category}
         </Text>
         </div>
         <div style={{minHeight: 'calc(100vh - 60px)', width:'100%', marginTop: '5px', display: 'flex', alignItems:'center', justifyContent: 'center'}}>

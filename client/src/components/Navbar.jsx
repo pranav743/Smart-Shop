@@ -317,27 +317,27 @@ const NAV_ITEMS = [
         {
           label: 'Electronics',
           subLabel: 'Discover the latest gadgets',
-          link: '/',
+          link: '/electronics',
         },
         {
           label: 'Fashion',
           subLabel: 'Stay in style with the latest trends',
-          link: '/',
+          link: '/fashion',
         },
         {
           label: 'Home & Kitchen',
           subLabel: 'Elevate your living spaces',
-          link: '/',
+          link: '/home-%26-kitchen',
         },
         {
           label: 'Beauty & Personal Care',
           subLabel: 'Look and feel your best',
-          link: '/',
+          link: '/beauty-%26-personel-care',
         },
         {
           label: 'Sports & Outdoors',
           subLabel: 'Explore your adventurous side',
-          link: '/',
+          link: '/sports-%26-outdoors',
         },
       ],
   },

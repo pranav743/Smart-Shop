@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import MultiForm from "./components/MultiForm"
 import WithSubnavigation from "./components/Navbar"
 import Otp from "./components/Otp"
+import Cart from "./components/Cart"
 
 
 //Importing Pages
@@ -13,6 +14,8 @@ import SignUp from "./components/SignUp";
 import BrowseProduct from './pages/Product/BrowseProduct';
 import ProductPage from "./pages/Product/ProductPage";
 import SignIn from "./components/SignIn";
+import BrowseCategory from "./pages/Product/BrowseCategory";
+
 
 
 
@@ -36,7 +39,9 @@ function App() {
           <Route path="/client/signup" element={<SignUp />} />
           <Route path="/client/otpvalidation" element={<Otp />} />
           <Route path="/" element={<BrowseProduct />} />
+          <Route path="/:category" element={<BrowseCategory />} />
           <Route path="/admin/browseproduct/product/:product_id" element={<ProductPage />} />
+          <Route path="/client/cart" element={<Cart />} />
           <Route path="/" element={<MultiForm />} />
         </Routes>
     </Router>

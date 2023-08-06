@@ -27,7 +27,7 @@ function DrawerExample() {
   return (
     <>
      
-      <Button ref={btnRef} colorScheme='teal' onClick={onOpen} style={{position: 'absolute', right: '10px', top: '7px', backgroundColor: '#0081fa'}}>
+      <Button ref={btnRef} colorScheme='teal' onClick={onOpen} style={{position: 'absolute', right: '10px', top: '7px', backgroundColor: '#002869'}}>
         <ArrowLeftIcon color='#fff'/>
       </Button>
       
@@ -64,6 +64,13 @@ function DrawerExample() {
             }
               }>
              Browse Product
+            </Container>
+            <Container centerContent={true} style={{margin: '10px 0 10px 0', cursor: 'pointer'}} onClick={() => {
+              navigate('/admin/users');
+              onClose();
+            }
+              }>
+             Manage Users
             </Container>
             
            

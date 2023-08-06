@@ -27,7 +27,7 @@ import axios from 'axios';
 export default function ProductPage(props) {
 
     const btnbg = useColorModeValue('gray.900', 'gray.50');
-    
+    const [user, setUser] = useState();
     const { product_id } = useParams();
 
     const [URL, setURL] = useState("http://localhost:5000/api/admin/products?_id=");
@@ -39,7 +39,8 @@ export default function ProductPage(props) {
           
           const url = URL + product_id
           const res = await axios.get(url);
-          var results = (res.data); 
+          console.log(res)
+          var results = res.data; 
           console.log(results.data[0])
           setProduct(results.data[0])
         }
@@ -55,9 +56,62 @@ export default function ProductPage(props) {
 
     }
 
+    const addToCart = () => {
+      if (localStorage.getItem("tokenSmartShop")){
+        add();
+      }
+      else{
+        const newTab = window.open('/client/signin', '_blank');
+        newTab.focus();
+      }
+    }
+
+    const fetchUserDetails = async () => {
+      try {
+          const url = "http://localhost:5000/api/client/afterauth";
+          const response = await axios.post(url, {
+              // data
+          }, {
+              headers: {
+              'Authorization': `Bearer ${localStorage.getItem('tokenSmartShop')}` 
+              }
+          });
+    
+          const user = response.data.msg;
+          setUser(user);
+        
+      } catch (error) {
+          console.error(error);
+          console.log(error.response.data.msg);
+       
+          localStorage.removeItem('tokenSmartShop');
+          window.location = "/client/signin";
+       
+      }
+    };
+
+    const add = async () =>{
+      try {
+        const url = "http://localhost:5000/api/client/cart/add";
+        const response = await axios.post(url, {
+            email: user.email,
+            _id: user._id,
+            product_id: product_id
+        });
+    
+    } catch (error) {
+        console.error(error);
+        console.log(error.response.data.msg);
+    }
+    }
+
     useEffect(() => {
-        console.log("STARTED")
+
         getSearchResults();
+        if (localStorage.getItem("tokenSmartShop")){
+          fetchUserDetails();
+        }
+        
       }, []);
 
 
@@ -154,7 +208,7 @@ return (
 
       
       <Stack>
-      <Button
+      <Button onClick={addToCart}
             rounded={'none'}
             w={'full'}
             mt={8}
