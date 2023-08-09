@@ -1,7 +1,9 @@
-import React, {useEffect, useState} from 'react'
-import { Stack, Text, Button, Container, Flex } from '@chakra-ui/react'
-import CartItem from './CartItem'
-import axios from 'axios'
+import React, {useEffect, useState} from 'react';
+import { Stack, Text, Button, Container, Flex } from '@chakra-ui/react';
+import CartItem from './CartItem';
+import axios from 'axios';
+import ConfirmOrder from './ConfirmOrder';
+
 
 export default function Cart() {
 
@@ -57,6 +59,8 @@ export default function Cart() {
 
     }
 
+
+
       useEffect(() => {
         fetchUserDetails();
       }, []);
@@ -95,7 +99,7 @@ export default function Cart() {
     </Container>
     { products &&
     <div style={{position: 'fixed', bottom: '0px', height: '60px', display: 'flex', width: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff', boxShadow: '0 0 5px #777'}}>
-        <Button
+        {/* <Button onClick={placeOrder}
                 style={{position: 'absolute', right: '15px', top: '10px'}}
                 type="submit"
                 bg={'pink.400'}
@@ -104,7 +108,8 @@ export default function Cart() {
                   bg: 'pink.500',
                 }}>
                 Place Order
-              </Button>
+              </Button> */}
+              <ConfirmOrder/>
         </div>
     }
     </Flex>

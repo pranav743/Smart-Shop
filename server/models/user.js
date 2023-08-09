@@ -43,34 +43,59 @@ const userSchema = new mongoose.Schema({
     ],
     current: [
       {
-        order_id: {
-          type: String,
-          required: true,
-        },
+        
         product_id: {
           type: String,
           required: true,
         },
+        quantity: {
+          type: Number,
+          required: true
+        },
         payment_method: {
           type: String,
-          required: true,
+          default: "Cash"
         },
+        address: {
+          type: String,
+          required: false
+        },
+        placedAt: {
+          type: Date,
+          required: true
+        }
       },
     ],
     history: [
       {
-        order_id: {
-          type: String,
-          required: true,
-        },
         product_id: {
           type: String,
           required: true,
+        },
+        quantity: {
+          type: Number,
+          required: true
         },
         payment_method: {
           type: String,
           required: true,
         },
+        address: {
+          type: String,
+          required: false
+        },
+        completedAt: {
+          type: Date,
+          required: true
+        },
+        amount: {
+          type: Number,
+          required: false
+        },
+        isReviewed: {
+          type: Boolean,
+          default: false
+        }
       },
     ],
   },

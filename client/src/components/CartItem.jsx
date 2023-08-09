@@ -13,15 +13,37 @@ const CartItem = (props) =>{
     const [productQuantity, setProductQunatity] = useState(quantity);
 
 
+
     const decreaseQuantity = () => {
         if ((parseInt(productQuantity) - 1)>0){
-            setProductQunatity(parseInt(productQuantity) - 1);
+            var newQuantity = parseInt(productQuantity) - 1
+            setProductQunatity(newQuantity);
+            updateQuantity(newQuantity);
         }    
     }
     const increaseQuantity = () => {
         if ((parseInt(productQuantity)-1)<6){
-            setProductQunatity(parseInt(productQuantity) + 1 );
+            var newQuantity = parseInt(productQuantity) + 1
+            setProductQunatity(newQuantity);
+            updateQuantity(newQuantity);
         }
+    }
+
+    const updateQuantity = async (quantity) => {
+        try {
+
+            const url = `http://localhost:5000/api/admin/updateproduct/update-cart-quantity`;
+            const res = await axios.put(url, {product_id: product._id, user_id: user_id, quantity: quantity});
+          }
+            catch (error){
+              if (error.response && !error.response.data.success) {
+              //   setWarning(error.response.data.msg);
+              console.log(error.response)
+              } else if (error.message == 'Network Error'){
+              //   setWarning("Server Unreachable !");
+              console.log("Server Unreachable");
+              }
+            }
     }
 
     const deleteItem = async () => {

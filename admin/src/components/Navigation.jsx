@@ -72,6 +72,13 @@ function DrawerExample() {
               }>
              Manage Users
             </Container>
+            <Container centerContent={true} style={{margin: '10px 0 10px 0', cursor: 'pointer'}} onClick={() => {
+              navigate('/admin/orders');
+              onClose();
+            }
+              }>
+             Manage Orders
+            </Container>
             
            
           </DrawerBody>

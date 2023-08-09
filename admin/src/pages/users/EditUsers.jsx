@@ -25,7 +25,7 @@ const EditUsers = () => {
     const [warning, setWarning] = useState(false);
     const [users, setUsers] =useState(false);
     const isFirstRender = useRef(true);
-    const [URL, setURL] = useState("http://localhost:5000/api/admin/users?select=_id,name,email,isActive&limit=15");
+    const [URL, setURL] = useState("http://localhost:5000/api/admin/users?select=_id,name,email,isActive&limit=5");
     const [page, setPage] = useState({
         next: false,
         prev: false,

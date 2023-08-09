@@ -11,6 +11,7 @@ import HomePage from "./components/HomePage"
 import AddProduct from "./pages/Product/AddProduct";
 import BrowseProduct from './pages/Product/BrowseProduct';
 import EditUsers from "./pages/users/EditUsers"
+import Orders_Page from "../src/pages/orders/orders"
 
 function Home() {
   return <h1>Home Page</h1>;
@@ -41,6 +42,7 @@ function App() {
           <Route path="/admin/addproduct" element={<AddProduct />} />
           <Route path="/admin/browseproduct" element={<BrowseProduct />} />
           <Route path="/admin/users" element={<EditUsers />} />
+          <Route path="/admin/orders" element={<Orders_Page />} />
           <Route path="/" element={<HomePage />} />
         </Routes>
     </Router>

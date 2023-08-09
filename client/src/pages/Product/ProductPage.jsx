@@ -15,16 +15,23 @@ import {
   GridItem,
   Divider,
   Spinner,
-  Center
+  Center,
+  useToast
 } from '@chakra-ui/react'
 import { MdLocalShipping } from 'react-icons/md';
 import { useParams } from 'react-router-dom';
 import BigCarousel from '../../components/BigCarousel';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import showToast from '../../components/Toast';
+
+
 
 
 export default function ProductPage(props) {
+
+
+    const toast = useToast();
 
     const btnbg = useColorModeValue('gray.900', 'gray.50');
     const [user, setUser] = useState();
@@ -98,10 +105,11 @@ export default function ProductPage(props) {
             _id: user._id,
             product_id: product_id
         });
+        showToast(toast, "Added to Cart", 'success', "Product has been added to your cart Successfully !")
     
     } catch (error) {
-        console.error(error);
-        console.log(error.response.data.msg);
+     
+        showToast(toast, "Error", 'error', "Failed to add product to the Cart")
     }
     }
 

@@ -13,12 +13,15 @@ import {
   Heading,
   Text,
   useColorModeValue,
+  useToast
 } from '@chakra-ui/react';
 import axios from 'axios';
+import showToast from "./Toast"
 
 export default function SimpleCard() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const toast = useToast();
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -38,36 +41,21 @@ export default function SimpleCard() {
 
       const url = "http://localhost:5000/api/client/userauth"
       const res = await axios.post(url, details) ;
-      // console.log(res);
+      console.log(res);
       localStorage.setItem("tokenSmartShop", res.data.token);
       setEmail("");
       setPassword("");
       window.location = "/";
       
   } catch (error) {
+     
 
-      // if (error.response) {
-
-      //     // console.log(error.response.data.msg);
-      //     setoccuredError(true);
-      //     seterrorMessage(error.response.data.msg);
-
-      //     setTimeout(() => {
-      //         setoccuredError(false);
-      //         seterrorMessage("");
-      //       }, 5000); // Reset after 3 seconds (3000 milliseconds)
-      //   }
-      //   if (error.message == 'Network Error'){
-
-      //     setoccuredError(true);
-      //     seterrorMessage("Servers Unreachable!");
-
-      //     setTimeout(() => {
-      //         setoccuredError(false);
-      //         seterrorMessage("");
-      //       }, 5000); 
-          
-      // }
+      if (error.response) {
+          showToast(toast, "Login Error", "error", error.response.data.msg)
+        }
+        if (error.message == 'Network Error'){
+          showToast(toast, "Network Error", "error", "Servers Unreachable !")   
+      }
       console.log(`Error: ${error.message}`);
       
   }

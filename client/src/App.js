@@ -15,6 +15,8 @@ import BrowseProduct from './pages/Product/BrowseProduct';
 import ProductPage from "./pages/Product/ProductPage";
 import SignIn from "./components/SignIn";
 import BrowseCategory from "./pages/Product/BrowseCategory";
+import Current_Orders from './pages/orders/Current_Orders';
+import History_Orders from './pages/orders/History_Orders';
 
 
 
@@ -42,6 +44,8 @@ function App() {
           <Route path="/:category" element={<BrowseCategory />} />
           <Route path="/admin/browseproduct/product/:product_id" element={<ProductPage />} />
           <Route path="/client/cart" element={<Cart />} />
+          <Route path="/client/current-orders" element={<Current_Orders />} />
+          <Route path="/client/history-orders" element={<History_Orders />} />
           <Route path="/" element={<MultiForm />} />
         </Routes>
     </Router>

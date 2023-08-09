@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {
   Box,
   Flex,
@@ -24,16 +23,56 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios'
 
 export default function WithSubnavigation() {
+
+  const [user, setUser] = useState({name: "Username"});
 
   const handleLogout = () => {
     localStorage.removeItem('tokenSmartShop');
     window.location = '/';
   };
 
+  const fetchUserDetails = async () => {
+    try {
+        const url = "http://localhost:5000/api/client/afterauth";
+        const response = await axios.post(url, {
+            // data
+        }, {
+            headers: {
+            'Authorization': `Bearer ${localStorage.getItem('tokenSmartShop')}` 
+            }
+        });
+  
+        const user = response.data.msg;
+        setUser(user);
+      
+    } catch (error) {
+        console.error(error);
+        console.log(error.response.data.msg);
+     
+        localStorage.removeItem('tokenSmartShop');
+        window.location = "/client/signin";
+     
+    }
+  };
+
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("tokenSmartShop") || false);
   const { isOpen, onToggle } = useDisclosure();
+
+
+  
+  useEffect(() => {
+
+    if (localStorage.getItem("tokenSmartShop")){
+      fetchUserDetails();  
+    }
+
+    
+
+  }, []);
 
   return (
     <Box>
@@ -66,7 +105,10 @@ export default function WithSubnavigation() {
             fontFamily={'heading'}
             color={useColorModeValue('gray.800', 'white')}
           >
-            Logo
+            <Avatar
+                    size={'sm'}
+                    src='/Logo.png'
+                  />
           </Text>
 
           <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
@@ -115,7 +157,7 @@ export default function WithSubnavigation() {
                   </Center>
                   <br />
                   <Center>
-                    <p>Username</p>
+                    <p>{user.name}</p>
                   </Center>
                   <br />
                   <MenuDivider />
@@ -347,12 +389,12 @@ const NAV_ITEMS = [
       {
         label: 'Current',
         subLabel: 'Find your current orders',
-        link: '/',
+        link: '/client/current-orders',
       },
       {
         label: 'Past',
         subLabel: 'Completed orders here',
-        link: '/',
+        link: '/client/history-orders',
       },
     ],
   },
