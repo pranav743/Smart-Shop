@@ -17,6 +17,7 @@ import SignIn from "./components/SignIn";
 import BrowseCategory from "./pages/Product/BrowseCategory";
 import Current_Orders from './pages/orders/Current_Orders';
 import History_Orders from './pages/orders/History_Orders';
+import Home_Page from './pages/Home_Page';
 
 
 
@@ -37,16 +38,16 @@ function App() {
 
       
         <Routes>
+          <Route path="/" element={<Home_Page />} />
           <Route path="/client/signin" element={<SignIn />} />
           <Route path="/client/signup" element={<SignUp />} />
           <Route path="/client/otpvalidation" element={<Otp />} />
-          <Route path="/" element={<BrowseProduct />} />
+          <Route path="/browse-all" element={<BrowseProduct />} />
           <Route path="/:category" element={<BrowseCategory />} />
           <Route path="/admin/browseproduct/product/:product_id" element={<ProductPage />} />
           <Route path="/client/cart" element={<Cart />} />
           <Route path="/client/current-orders" element={<Current_Orders />} />
           <Route path="/client/history-orders" element={<History_Orders />} />
-          <Route path="/" element={<MultiForm />} />
         </Routes>
     </Router>
     </div>

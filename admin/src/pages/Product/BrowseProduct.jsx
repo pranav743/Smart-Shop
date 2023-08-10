@@ -41,7 +41,7 @@ const BrowseProduct = () => {
       current: '1'
     });
     const [fetching, setFetching] = useState(true);
-    const [URL, setURL] = useState("http://localhost:5000/api/admin/products?limit=2");
+    const [URL, setURL] = useState("http://localhost:5000/api/admin/products?limit=6");
     const [slug, setSlug] = useState('');
     const [cardView, setCardView] = useBoolean();
     const [search, setSearch] = useState({

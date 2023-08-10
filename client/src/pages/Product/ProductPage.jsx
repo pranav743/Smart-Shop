@@ -24,6 +24,7 @@ import BigCarousel from '../../components/BigCarousel';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import showToast from '../../components/Toast';
+import Rating from '../../components/RatingComponent';
 
 
 
@@ -46,9 +47,8 @@ export default function ProductPage(props) {
           
           const url = URL + product_id
           const res = await axios.get(url);
-          console.log(res)
           var results = res.data; 
-          console.log(results.data[0])
+          // console.log(results.data[0])
           setProduct(results.data[0])
         }
           catch (error){
@@ -90,7 +90,6 @@ export default function ProductPage(props) {
       } catch (error) {
           console.error(error);
           console.log(error.response.data.msg);
-       
           localStorage.removeItem('tokenSmartShop');
           window.location = "/client/signin";
        
@@ -108,8 +107,12 @@ export default function ProductPage(props) {
         showToast(toast, "Added to Cart", 'success', "Product has been added to your cart Successfully !")
     
     } catch (error) {
-     
+      if ((error.response.data.msg) == "The Product is currently Out of Stock"){
+        showToast(toast, "Error", 'error', "The Product is currently Out of Stock")
+      } else{
         showToast(toast, "Error", 'error', "Failed to add product to the Cart")
+      }
+        
     }
     }
 
@@ -128,22 +131,11 @@ return (
 
    <>
     { product ?
+    <> 
     <Grid padding={6} templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)', lg: 'repeat(2, 2fr)' }} gap={4} m={'60px 0 0 0'}>
       <GridItem bg="red.200">
       <Flex>
-          {/* <Image
-            rounded={'md'}
-            alt={'product image'}
-            src={
-              'https://images.unsplash.com/photo-1596516109370-29001ec8ec36?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyODE1MDl8MHwxfGFsbHx8fHx8fHx8fDE2Mzg5MzY2MzE&ixlib=rb-1.2.1&q=80&w=1080'
-            }
-            fit={'cover'}
-            align={'center'}
-            w={'100%'}
-            h={{ base: '100%', sm: '400px', lg: '500px' }}
-          /> */}
           <BigCarousel folderName={product.slug} imageName={product.details.imgs} />
-         
         </Flex>
       </GridItem>
       <GridItem bg="white.200">
@@ -254,11 +246,57 @@ return (
           </Stack>
 
 
-    </Grid> :
+    </Grid> 
+    
+    <div style={{padding: '10px'}}><Stack m={'20px 10px 25px 10px'}>
+    <Divider/>
+      
+      <Text fontSize={'22px'}>Overall Rating</Text>
+      {
+        product.details.avgRating ? <Flex justifyContent={'center'} width={'100%'} padding={6}>
+
+          <Stack>
+          
+          <Text fontSize={'30px'} fontWeight={'bold'}>{product.details.avgRating}/5</Text>
+          <Rating rating={product.details.avgRating}></Rating>
+
+          </Stack>
+          
+          </Flex> :
+        <Text>No One Rated this Product</Text>
+      }
+
+      <Divider/>
+
+      <Text textAlign={'left'} fontSize={'21px'} m={5}>Reviews</Text>
+      {
+        product.reviews.length > 0 ? 
+
+        product.reviews.map((review, index) => (
+          <Stack m={'10px 2vw'} padding={'10px'}>
+            <Divider m={'10px'}/>
+            <Rating rating={review.rating}/>
+              <Text textAlign={'left'} fontSize={'18px'}>{review.reviewer}</Text>
+  
+              <p style={{height: 'auto', padding: '10px 10px 10px 0', textAlign: 'left', fontSize: '15px' }}>{review.comment}</p>
+          </Stack>
+        ))
+
+        :
+
+        <Text>No One has Reviewed This Product</Text>
+        
+      }
+      
+      </Stack></div>
+    </>
+    :
     <Center height="100vh">
     <Spinner size="xl" />
     </Center>
+    
     }
+    
     </>
   );
 }

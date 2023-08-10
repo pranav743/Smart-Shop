@@ -11,11 +11,12 @@ import {
 } from '@chakra-ui/react';
 import Carousel from './Carousel';
 import {Link} from 'react-router-dom';
+import Rating from './RatingComponent';
 
 
 
 export default function CustomerProductCard(props) {
-    const { title, description, category, price, available_quantity, date, _id, folderName, imageName, discount, brand, originalPrice } = props;
+    const { title, description, category, price, available_quantity, date, _id, folderName, imageName, discount, brand, originalPrice, rating } = props;
     const truncatedDescription = description.length > 70 ? description.slice(0, 70) + '...' : description;
     const truncatedTitle = title.length > 30 ? title.slice(0, 30) + '...' : title;
     const quantity = `Quantity : ${available_quantity}`;
@@ -81,10 +82,24 @@ export default function CustomerProductCard(props) {
             <Text textDecoration={'line-through'} color={'gray.600'}>
                 {originalPrice}
             </Text>
+            
           </Stack>
+          {
+            
+          }
+          {
+            rating ?
+            <Rating rating = {rating}/>
+            :
+            <Rating rating={0}></Rating>
+
+
+          }
+          
         </Stack>
         </Link>
       </Box>
+      
     </Center>
   )
 }

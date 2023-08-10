@@ -17,6 +17,7 @@ const validateotp = require("./routes/OTP/validate");
 const userauth = require("./routes/auth");
 const afterauth = require("./routes/afterauth");
 const cart = require("./routes/cart");
+const review = require("./routes/reviews");
 
 
 
@@ -51,6 +52,7 @@ app.use("/api/client/validateotp", validateotp);
 app.use("/api/client/userauth", userauth);
 app.use("/api/client/afterauth", afterauth);
 app.use("/api/client/cart", cart);
+app.use("/api/client/review", review);
 
 
 

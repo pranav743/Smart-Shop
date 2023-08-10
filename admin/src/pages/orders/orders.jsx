@@ -86,7 +86,7 @@ const Orders_page = () => {
       <div style={{ marginTop: '70px', width: '90vw', marginLeft: 'calc(5vw)' }}>
         {orders.length > 0 ?
           <Text m={7}>Following is List of Orders</Text> :
-          <Text>There are no users to display</Text>
+          <Text>There are no Orders Currently</Text>
         }
 
         <TableContainer>

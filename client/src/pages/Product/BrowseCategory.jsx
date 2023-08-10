@@ -285,9 +285,12 @@ const BrowseProduct = (props) => {
 
                     <>
                     
-                    <CustomerProductCard originalPrice = {item.price.actual_price} brand={item.details.brand} folderName={item.slug} imageName={item.details.imgs} title= {item.title} description = {item.details.description}  category = {item.category.broad_category} price = {`₹${Math.floor(item.price.actual_price * ((100 - item.price.discount)/100))}`} available_quantity = {item.details.available_quantity} date = {item.editedAt} _id={item._id} key={item._id} discount = {item.price.discount}/>
-                
-
+                    {
+                      item.details.avgRating ? 
+                      <CustomerProductCard originalPrice = {item.price.actual_price} brand={item.details.brand} folderName={item.slug} imageName={item.details.imgs} title= {item.title} description = {item.details.description}  category = {item.category.broad_category} price = {`₹${Math.floor(item.price.actual_price * ((100 - item.price.discount)/100))}`} available_quantity = {item.details.available_quantity} date = {item.editedAt} _id={item._id} key={item._id} discount = {item.price.discount} rating={item.details.avgRating}/>
+                      :
+                      <CustomerProductCard originalPrice = {item.price.actual_price} brand={item.details.brand} folderName={item.slug} imageName={item.details.imgs} title= {item.title} description = {item.details.description}  category = {item.category.broad_category} price = {`₹${Math.floor(item.price.actual_price * ((100 - item.price.discount)/100))}`} available_quantity = {item.details.available_quantity} date = {item.editedAt} _id={item._id} key={item._id} discount = {item.price.discount} rating={false}/>
+                    }
                     </>
                 ))}
                 

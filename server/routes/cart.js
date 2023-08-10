@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
-
+const Product = require("../models/product");
+const mongoose = require('mongoose');
 
 
 router.post("/add", async (req, res) => {
@@ -10,6 +11,16 @@ router.post("/add", async (req, res) => {
         const user = await User.findById(req.body._id);
         if (!user) {
           return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        const product = await Product.findById(req.body.product_id);
+        if (!product){
+          return res.status(404).json({ success: false, msg: 'Product not found' });
+        }
+        else{
+          if (product.details.available_quantity < 1){
+            return res.status(400).json({ success: false, msg: 'The Product is currently Out of Stock' });
+          }
         }
     
         const existingCartItem = user.orders.cart.find(item => item.product_id === req.body.product_id);
@@ -33,33 +44,101 @@ router.post("/add", async (req, res) => {
 });
 
 
+// router.post('/move-all-to-current', async (req, res) => {
+//   try {
+//     const { user_id, payment_method, address } = req.body;
+
+
+//     // Find the user by user_id
+//     const user = await User.findById(user_id);
+//     if (!user) {
+//       return res.status(404).json({ success: false, message: 'User not found' });
+//     }
+//     const currentDate = new Date();
+
+//     // Prepare items to add to orders.current
+//     const itemsToAdd = user.orders.cart.map(({ product_id, quantity }) => ({
+//       address: address,
+//       product_id: product_id.toString(),
+//       quantity,
+//       payment_method,
+//       placedAt: currentDate
+//     }));
+
+//     // Move all orders from cart to current orders with payment_method
+//     user.orders.current.push(...itemsToAdd);
+//     user.orders.cart = [];
+
+//     // Save the updated user
+//     await user.save();
+
+//     return res.status(200).json({ success: true, message: 'All items moved to current orders with payment_method' });
+//   } catch (error) {
+//     console.log("Failed to move items to current orders with payment_method".red.bold);
+//     return res.status(500).json({ success: false, msg: 'Failed to move items to current orders with payment_method', problem: error.message });
+//   }
+// });
+
+
 router.post('/move-all-to-current', async (req, res) => {
   try {
     const { user_id, payment_method, address } = req.body;
-
 
     // Find the user by user_id
     const user = await User.findById(user_id);
     if (!user) {
       return res.status(404).json({ success: false, message: 'User not found' });
     }
-    const currentDate = new Date();
 
-    // Prepare items to add to orders.current
-    const itemsToAdd = user.orders.cart.map(({ product_id, quantity }) => ({
-      address: address,
-      product_id: product_id.toString(),
-      quantity,
-      payment_method,
-      placedAt: currentDate
+    const currentDate = new Date();
+    const insufficientProducts = [];
+
+    // Prepare items to add to orders.current and update product quantities
+    const itemsToAdd = await Promise.all(user.orders.cart.map(async ({ product_id, quantity }) => {
+      // Find the product by product_id
+      const product = await Product.findById(product_id);
+      if (!product) {
+        throw new Error(`Product not found with ID: ${product_id}`);
+      }
+
+      // Check if sufficient quantity is available
+      if (product.details.available_quantity < quantity) {
+        insufficientProducts.push(product.title);
+        return null;
+      }
+
+      // Update product's available_quantity
+      product.details.available_quantity -= quantity;
+
+      return {
+        address: address,
+        product_id: product_id.toString(),
+        quantity,
+        payment_method,
+        placedAt: currentDate
+      };
     }));
 
+    if (insufficientProducts.length > 0) {
+      const joinedString = insufficientProducts.join(', ');
+      return res.status(400).json({ success: false, msg: `Insufficient quantity available for ${joinedString}`, insufficientProducts });
+    }
+
     // Move all orders from cart to current orders with payment_method
-    user.orders.current.push(...itemsToAdd);
+    const addedItems = itemsToAdd.filter(item => item !== null);
+    user.orders.current.push(...addedItems);
     user.orders.cart = [];
 
-    // Save the updated user
-    await user.save();
+    // Save the updated user and update product quantities
+    await Promise.all([
+      user.save(),
+      ...addedItems.map(async item => {
+        await Product.updateOne(
+          { _id: item.product_id },
+          { $inc: { 'details.available_quantity': -item.quantity } }
+        );
+      })
+    ]);
 
     return res.status(200).json({ success: true, message: 'All items moved to current orders with payment_method' });
   } catch (error) {
@@ -67,6 +146,10 @@ router.post('/move-all-to-current', async (req, res) => {
     return res.status(500).json({ success: false, msg: 'Failed to move items to current orders with payment_method', problem: error.message });
   }
 });
+
+
+
+
 
 router.post('/move-to-history', async (req, res) => {
   try {

@@ -105,10 +105,12 @@ export default function WithSubnavigation() {
             fontFamily={'heading'}
             color={useColorModeValue('gray.800', 'white')}
           >
+            <Link to='/'>
             <Avatar
                     size={'sm'}
                     src='/Logo.png'
                   />
+            </Link>
           </Text>
 
           <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
@@ -399,8 +401,8 @@ const NAV_ITEMS = [
     ],
   },
   {
-    label: 'Browse',
-    link: '/',
+    label: 'Browse All',
+    link: '/browse-all',
   },
   
 ];

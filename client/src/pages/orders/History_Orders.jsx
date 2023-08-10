@@ -11,7 +11,8 @@ import {
     Text,
     Button,
     Flex,
-    Stack
+    Stack,
+
   } from '@chakra-ui/react';
   import {
     ChevronRightIcon,
@@ -22,6 +23,7 @@ import axios from 'axios';
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom'
 import styles from '../Product/BrowseProduct.module.css';
+import PostReview from '../../components/PostReview';
 
 
 function formatDateTime(dateTimeString) {
@@ -58,7 +60,7 @@ const History_Orders = () => {
     
           const user = response.data.msg;
           setUser(user);
-          if (response.data.msg.orders.current.length > 0){
+          if (response.data.msg.orders.history.length > 0){
                 setIsProduct(true)
           }
         
@@ -117,7 +119,10 @@ const History_Orders = () => {
                             </Td>
                             <Td minWidth={'120px'} maxWidth={'120px'} whiteSpace={"normal"}>{formatDateTime(user.completedAt)}</Td>
                             <Td minWidth={'200px'} maxWidth={'200px'} whiteSpace={"normal"}>{user.address}</Td>
-                            <Td isNumeric><Button bg={'pink.400'} >Review Product</Button></Td>
+                            <Td isNumeric>{ user.isReviewed ?
+                                <Text>Reviewed</Text> :
+                                <PostReview product_id={user.product_id}/>
+                            }</Td>
                            
                             </Tr>
                         );
@@ -136,7 +141,7 @@ const History_Orders = () => {
         :
         <Flex justifyContent="center" alignItems={'center'} minHeight={'100vh'}>
             <Stack>
-            <Text m={6} fontSize={'22px'} color={'pink.300'}>Looks Like you haven't ordered Anything :(</Text>
+            <Text m={6} fontSize={'22px'} color={'pink.300'}>Looks Like you haven't ordered Anything or Your Orders Might be on the Way</Text>
             <Link to="/"><Text color={'blue.500'}>Continue Shopping</Text></Link>
             </Stack>
         </Flex>

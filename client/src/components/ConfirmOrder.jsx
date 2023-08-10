@@ -17,10 +17,12 @@ import {
   AlertIcon,
   Textarea,
   InputLeftAddon,
-  Select
+  Select,
+  useToast
 } from '@chakra-ui/react';
 import { TriangleDownIcon, EditIcon } from '@chakra-ui/icons';
 import axios from 'axios';
+import showToast from './Toast';
 
 function removeRupeeSign(inputString) {
   const stringWithoutRupeeSign = inputString.replace(/₹/g, '');
@@ -29,6 +31,7 @@ function removeRupeeSign(inputString) {
 
 function ConfirmOrder(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
   // var {
   //   title,
   //   description: initialDescription,
@@ -58,8 +61,8 @@ function ConfirmOrder(props) {
     }
       catch (error){
         if (error.response && !error.response.data.success) {
-        //   setWarning(error.response.data.msg);
-        console.log(error.response)
+        showToast(toast, 'Cannot Place Order', 'error', error.response.data.msg)
+        console.log(error.response.data.msg)
         } else if (error.message == 'Network Error'){
         //   setWarning("Server Unreachable !");
         console.log("Server Unreachable");
