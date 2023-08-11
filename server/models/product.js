@@ -7,7 +7,7 @@ const reviewSchema = new mongoose.Schema({
       required: [true, "Rating is required"],
       integer: [true, "Rating can only be an Integer."],
       min: 0,
-      max: 10
+      max: 5
     },
     comment: {
       type: String,
@@ -63,7 +63,11 @@ const productSchema = new mongoose.Schema({
         sub_category: {
             required: false,
             type: String
-        }
+        },
+        slug: {
+            required: false,
+            type:String
+        },
     },
     details: {
         brand: {
@@ -98,9 +102,46 @@ const productSchema = new mongoose.Schema({
             type: String,
             maxlength: [700, "Product Description should not exceed 700 characters"],
             required: [true, "Product Description should not be empty"]
+        },
+        avgRating: {
+            type: Number,
+            min: 0,
+            max: 5
         }    
     },
-    reviews: [reviewSchema]
+    postedAt: {
+        type: Date,
+        default: Date.now
+    },
+    editedAt: {
+        type: Date,
+        default: Date.now
+    },
+
+    reviews: [
+        {
+            rating: {
+                type: Number,
+                required: [true, "Rating is required"],
+                integer: [true, "Rating can only be an Integer."],
+                min: 0,
+                max: 5
+              },
+              comment: {
+                type: String,
+                required: false,
+                maxlength: [500, "Max length is 500"]
+              },
+              reviewer: {
+                  type: String,
+                  required: [true, "Reviewer Name is Missing"]
+              },
+              date: {
+                  type: Date,
+                  default: Date.now
+              }
+        }
+    ]
 })
 
 const Product = mongoose.model('Product', productSchema);

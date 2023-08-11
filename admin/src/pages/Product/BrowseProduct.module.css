@@ -1,0 +1,170 @@
+.stackElement{
+    width: 100%;
+    padding: 10px 5px;
+    display: flex;
+    background-color: #fff;
+    box-shadow: 0 0 3px #666;
+    height: auto;
+    flex-direction: row;
+    margin: 1px 3px;
+    
+}
+
+.itemPhoto{
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    background-color: #0081fa;
+    margin: 0 10px 15px 5px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px #555;
+}
+
+.infoContainer{
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 300px);
+    padding: 10px;
+    height: auto;
+}
+
+.productP{
+    text-align: left;
+}
+
+.editButtons{
+    background-color: #0081fab8;
+    background-image: linear-gradient(180deg, #002869, #000);
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.editButtons:hover{
+    background-image: linear-gradient(180deg, #0081fa);
+    transform: scale(1.2);
+}
+
+.changeView{
+    background-color: #ffffff;
+    color: #000;
+    display: flex;
+    transition: all 0.3s;
+    border-radius: 5px;
+}
+.changeView:hover{
+    background-color: #cecece;
+    color: #000;
+    letter-spacing: 2px;
+}
+
+.paginationContainer{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 15px 0;
+}
+
+.paginationInnerContainer{
+    width: auto;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.paginationLink{
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+.searchContainer{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    padding: 15px 10px;
+    background-color: #000000a2;
+    position: fixed;
+    top: 60px;
+    z-index: 1;
+}
+
+#searchBar{
+    width: 50vw;
+    height: 40px;
+    background-color: #fff;
+    border-radius: 20px;
+    min-width: 250px;
+    max-width: 600px;
+    padding: 0px 60px 0px 20px;
+}
+
+#searchIcon{
+    position: absolute;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    right: 0.2px;
+    border-radius: 20px;
+    width: 50px;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+#searchIcon:hover{
+    background-image: linear-gradient(60deg,#52ef4a66, #ffffff37);
+    width: 100%;
+    
+}
+
+#suggestionsContainer{
+  z-index: 1;
+  background-color: #fff;
+  height: auto;
+  position: absolute;
+  width: 45vw;
+  margin-left: 18px;
+  border: solid 0.5px #777;
+  min-width: 200px;
+  overflow: hidden;
+  margin-top: 15px;
+  max-width: 550px;
+  box-shadow: 0 0 30px #555;
+}
+
+.suggestionItem{
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding: 0 5px;
+    text-align: left;
+    width: 100%;
+    max-height: 40px;
+    transition: all 0.3s;
+}
+
+.suggestionItem:hover{
+    background-color: #cececeb9;
+}
+
+
+
+@media only screen and (max-width: 800px) {
+    .stackElement{
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 250px;
+        
+    }
+    .infoContainer{
+        width: 100%;
+    }
+    .productP{
+        text-align: center;
+    }
+  }

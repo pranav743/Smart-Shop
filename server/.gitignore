@@ -4,3 +4,7 @@ config.env
 # Installed Modules
 node_modules/
 package-lock.json
+
+
+#stored imgs
+imgs/
