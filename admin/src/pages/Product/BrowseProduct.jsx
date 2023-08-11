@@ -12,14 +12,24 @@ import {
     useBoolean,
     
   } from '@chakra-ui/react';
-  import { EditIcon,
+  import {
       ChevronRightIcon,
       ChevronLeftIcon,
       Search2Icon 
   } from '@chakra-ui/icons';
   import axios from 'axios';
-  import ProductCard from "./ProductCard"
+  import ProductCard from "./ProductCard";
+  import Carousel from '../../components/Carousel';
+  import EditMenu from '../../components/EditProduct';
 
+
+function convertToSlug(str) {
+  // Replace spaces with hyphens
+  const slug = str.replace(/\s+/g, '-');
+  // Convert to lowercase
+  const lowercaseSlug = slug.toLowerCase();  
+  return lowercaseSlug;
+}
 
 const BrowseProduct = () => {
     const isFirstRender = useRef(true);
@@ -31,22 +41,100 @@ const BrowseProduct = () => {
       current: '1'
     });
     const [fetching, setFetching] = useState(true);
-    const [URL, setURL] = useState("http://localhost:5000/api/admin/products?page=1");
+    const [URL, setURL] = useState("http://localhost:5000/api/admin/products?limit=6");
+    const [slug, setSlug] = useState('');
     const [cardView, setCardView] = useBoolean();
+    const [search, setSearch] = useState({
+      current: '',
+      suggestions: []
+    });
+
+
+    const clearSuggestions = () => {
+        setSearch((prevSearch) => ({ ...prevSearch, suggestions: [] }));
+    }
+    const showSearchedResults = () =>{
+      setPage({
+        next: false,
+        prev: false,
+        current: '1'
+      });
+      setProductDetails({data: search.suggestions});
+      setSearch({...search, suggestions: []});
+    }
+    const handleKeyPress = (event) => {
+      if (event.key === 'Enter') {
+        showSearchedResults();
+
+      } else if (event.key === 'Escape') {
+        clearSuggestions();
+      }
+    };
+
+    const getSearchResults = async () => {
+        
+        try {
+          
+          const url = `http://localhost:5000/api/admin/products/suggestions?q=${search.current}`;
+          const res = await axios.get(url);
+          var results = (res.data.suggestions); 
+          
+          if (search.current == '' || search.current == ' '){
+            setSearch((prevSearch) => ({ ...prevSearch, suggestions: [] }));
+          }
+          else{
+            setSearch((prevSearch) => ({ ...prevSearch, suggestions: results }));
+          }
+          
+          
+          }
+          catch (error){
+            if (error.response && !error.response.data.success) {
+              setWarning(error.response.data.msg);
+            } else if (error.message == 'Network Error'){
+              setWarning("Server Unreachable !");
+            }
+          }
+
+    }
     
+    const handleSearch = (e)=> {
+      const {name, value } = e.target;
+      setSearch((prevDetails) => ({...prevDetails, [name]: value}));
+    }
 
     const [warning, setWarning] = useState(false);
 
-    const GetList = async (data) =>{
+    const GetList = async (page_no, searchSlug) =>{
         setFetching(true);
         
         try {
-          if (data){
-            var url = `http://localhost:5000/api/admin/products?page=${data}`
-          } else{
-            var url = URL
+          var url = URL;
+          if (page_no){
+            if (slug){
+              url = URL + `&page=${page_no}&slug=${slug}`;
+            }
+            else{
+              url = URL + `&page=${page_no}`;
+            }
+            setPage({...page, current: `${page_no}`})
           }
-          const res = await axios.get(url, data);
+          else if (searchSlug){
+            setSlug(convertToSlug(searchSlug));
+            url = URL + `&slug=${searchSlug}`;
+            setPage({...page, current: `1`});
+
+          }
+          else{
+            url = URL + `&page=1`
+            setPage({...page, current: '1'});
+          }
+          if (searchSlug){
+            url = URL + `&slug=${searchSlug}}`;
+          }
+          
+          console.log(url)
+          const res = await axios.get(url);
           console.log(res.data); 
           setProductDetails(res.data);
           if (res.data.pagination.prev && res.data.pagination.next){
@@ -93,14 +181,14 @@ const BrowseProduct = () => {
       }
 
       const refreshResults = (e) => {
-        var url = `http://localhost:5000/api/admin/products?page=${e}`;
-        setURL(url);
 
         GetList(e);
         setPage({
           ...page, current: e
         })
       }
+
+      
 
       useEffect(() => {
 
@@ -114,8 +202,7 @@ const BrowseProduct = () => {
           timer = setTimeout(() => {
             setWarning(false);
           }, 5000);
-        }
-    
+        } 
     
         return () => {
           clearTimeout(timer);
@@ -153,8 +240,22 @@ const BrowseProduct = () => {
 
             <span style={{position: 'relative'}}>
               <span id={styles.searchIcon}><Search2Icon/></span>
-              <input type="text" id={styles.searchBar} placeholder='Search...'/>
+              <input name='current' type="text" id={styles.searchBar} placeholder='Search...' value={search.current} onInput={handleSearch} autoComplete='off' onChange={getSearchResults} onKeyDown={handleKeyPress}/>
+              <div id={styles.suggestionsContainer}>
+                {search.suggestions.map((suggestion, index) => (
+                  <div className={styles.suggestionItem}
+                  onClick={() => {
+                    setSearch({...search,current: suggestion.title});
+                    setProductDetails({data: suggestion});
+                    showSearchedResults();
+                    
+                  }}
+                  key={index}>{suggestion.title}</div>
+                ))}
+                
+              </div>
             </span>
+
 
           </div>
           
@@ -169,10 +270,11 @@ const BrowseProduct = () => {
                 <>
                 {productDetails.data.map((item, index) => (
                         <div className={styles.stackElement} key={item._id}>
-                            <div className={styles.itemPhoto}><img src="https://picsum.photos/200" alt="Product Photo" /></div>
+                            <div className={styles.itemPhoto}><Carousel folderName={item.slug} imageName={item.details.imgs}/></div>
                             <div className={styles.infoContainer}>
                             <p className={styles.productP} style={{ fontSize: '21px', fontWeight: 'bold', marginBottom: '10px' }}>
-                                {item.title} <EditIcon ml='2vw' cursor='pointer' />
+                                {item.title} 
+                                <EditMenu ml='2vw' cursor='pointer' folderName={item.slug} imageName={item.details.imgs} title= {item.title} description = {item.details.description}  category = {item.category.broad_category} price = {`₹${Math.floor(item.price.actual_price * ((100 - item.price.discount)/100))}`} available_quantity = {item.details.available_quantity} date = {item.editedAt} _id={item._id} key={item._id} discount = {item.price.discount} editicon = {true}/>
                             </p>
                             <div style={{ display: 'flex', height: 'auto', alignItems: 'center', marginBottom: '10px' }}>
                                 <p style={{ marginRight: '10px' }}>Quantity : </p>
@@ -209,7 +311,7 @@ const BrowseProduct = () => {
                     :
                 <>
                 {productDetails.data.map((item) => (
-                    <ProductCard title= {item.title} description = {item.details.description}  category = {item.category.broad_category} price = {`₹${Math.floor(item.price.actual_price * ((100 - item.price.discount)/100))}`} available_quantity = {item.details.available_quantity} date = {item.editedAt} _id={item._id} key={item._id}/>
+                    <ProductCard folderName={item.slug} imageName={item.details.imgs} title= {item.title} description = {item.details.description}  category = {item.category.broad_category} price = {`₹${Math.floor(item.price.actual_price * ((100 - item.price.discount)/100))}`} available_quantity = {item.details.available_quantity} date = {item.editedAt} _id={item._id} key={item._id} discount = {item.price.discount}/>
                 ))}
                 </>     
             }

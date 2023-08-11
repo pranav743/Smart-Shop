@@ -4,12 +4,14 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 
 
 //Importing Components
-import MultiForm from "./components/MultiForm"
+import HomePage from "./components/HomePage"
 
 
 //Importing Pages
 import AddProduct from "./pages/Product/AddProduct";
 import BrowseProduct from './pages/Product/BrowseProduct';
+import EditUsers from "./pages/users/EditUsers"
+import Orders_Page from "../src/pages/orders/orders"
 
 function Home() {
   return <h1>Home Page</h1>;
@@ -31,7 +33,7 @@ function App() {
       <Router>
 
         
-      <div style={{ position: 'fixed', top: '0', height: '60px', backgroundImage: 'linear-gradient(180deg, #002869, #000)', width: '100%', boxShadow: '0 0 0px #555', zIndex: '2'}}>
+      <div style={{ position: 'fixed', top: '0', height: '60px', backgroundImage: 'linear-gradient(270deg, #002869, #000)', width: '100%', boxShadow: '0 0 0px #555', zIndex: '2'}}>
         <Navigation />
       </div>
 
@@ -39,7 +41,9 @@ function App() {
         <Routes>
           <Route path="/admin/addproduct" element={<AddProduct />} />
           <Route path="/admin/browseproduct" element={<BrowseProduct />} />
-          <Route path="/" element={<MultiForm />} />
+          <Route path="/admin/users" element={<EditUsers />} />
+          <Route path="/admin/orders" element={<Orders_Page />} />
+          <Route path="/" element={<HomePage />} />
         </Routes>
     </Router>
     </div>
