@@ -35,7 +35,7 @@ const searchProduct = require("./routes/searchProduct");
 // MiddleWare
 app.use(express.json());
 app.use(cors({
-    origin: '*',
+    origin: "*",
     methods: ["POST", "GET", "PUT", "DELETE"],
     credentials: true
 }));
@@ -58,6 +58,27 @@ app.use("/api/client/afterauth", afterauth);
 app.use("/api/client/cart", cart);
 app.use("/api/client/review", review);
 
+
+app.get('/', (req, res) => {
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Smart Shop Server</title>
+        </head>
+        <body>
+          <h1>Hello, this is the official server of Smart Shop</h1>
+          <p>Owner: Pranav</p>
+        </body>
+      </html>
+    `;
+  
+    // Set the Content-Type header to indicate that the response is HTML
+    res.setHeader('Content-Type', 'text/html');
+  
+    // Send the HTML content as the response body
+    res.send(htmlContent);
+  });
 
 
 
