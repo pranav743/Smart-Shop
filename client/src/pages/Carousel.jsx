@@ -47,7 +47,18 @@ export default function CaptionCarousel() {
 
   return (
     <>
-      <div style={{ height: '600px', width: '100%', backgroundColor: '#000', position: 'relative' }}>
+      <div
+      style={{
+        height: '600px', 
+        width: '100%', 
+        backgroundColor: '#000', 
+        position: 'relative',
+        /* Set height to 250px for phone screens */
+        '@media (max-width: 768px)': {
+          height: '250px',
+        }
+      }}
+    >
         <img src={imgs[current]} alt="Not found" style={{ height: '100%', width: '100%' }} />
       </div>
 
