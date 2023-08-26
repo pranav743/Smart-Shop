@@ -71,7 +71,7 @@ connectDB();
 
 
 
-PORT = 5001;
+PORT = process.env.PORT || 5001;
 app.listen(PORT, (req, res) => {
     console.log(`Server running on Port ${PORT}`.yellow.bold);
 })
