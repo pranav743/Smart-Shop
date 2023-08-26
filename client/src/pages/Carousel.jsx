@@ -43,7 +43,7 @@ export default function CaptionCarousel() {
       // Clear the interval when the component is unmounted or re-rendered
       clearInterval(interval);
     };
-  }, [imgs.length]); // Only run the effect when the imgs array changes
+  }, [imgs.length]);
 
   return (
     <>

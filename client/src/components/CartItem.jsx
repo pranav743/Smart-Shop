@@ -3,7 +3,8 @@ import Carousel from './AutoCarousel';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { DeleteIcon} from '@chakra-ui/icons'
+import { DeleteIcon} from '@chakra-ui/icons';
+import { server } from '../utils';
 
 
 
@@ -32,7 +33,7 @@ const CartItem = (props) =>{
     const updateQuantity = async (quantity) => {
         try {
 
-            const url = `http://localhost:5000/api/admin/updateproduct/update-cart-quantity`;
+            const url = server + `admin/updateproduct/update-cart-quantity`;
             const res = await axios.put(url, {product_id: product._id, user_id: user_id, quantity: quantity});
           }
             catch (error){
@@ -49,7 +50,7 @@ const CartItem = (props) =>{
     const deleteItem = async () => {
         try {
 
-            const url = `http://localhost:5000/api/client/cart/delete`;
+            const url = server + `client/cart/delete`;
             const res = await axios.post(url, {_id: user_id, product_id: product._id});
             var results = (res.data.data); 
             console.log(results);

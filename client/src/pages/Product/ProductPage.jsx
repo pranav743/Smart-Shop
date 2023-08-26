@@ -25,6 +25,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import showToast from '../../components/Toast';
 import Rating from '../../components/RatingComponent';
+import { server } from '../../utils';
 
 
 
@@ -38,7 +39,7 @@ export default function ProductPage(props) {
     const [user, setUser] = useState();
     const { product_id } = useParams();
 
-    const [URL, setURL] = useState("http://localhost:5000/api/admin/products?_id=");
+    const [URL, setURL] = useState(server + "admin/products?_id=");
     const [product, setProduct] = useState(false);
 
     const getSearchResults = async () => {
@@ -75,7 +76,7 @@ export default function ProductPage(props) {
 
     const fetchUserDetails = async () => {
       try {
-          const url = "http://localhost:5000/api/client/afterauth";
+          const url = server + "client/afterauth";
           const response = await axios.post(url, {
               // data
           }, {
@@ -98,7 +99,7 @@ export default function ProductPage(props) {
 
     const add = async () =>{
       try {
-        const url = "http://localhost:5000/api/client/cart/add";
+        const url = server + "client/cart/add";
         const response = await axios.post(url, {
             email: user.email,
             _id: user._id,

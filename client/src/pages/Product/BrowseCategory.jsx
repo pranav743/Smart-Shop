@@ -21,6 +21,7 @@ import {
   import axios from 'axios';
 import CustomerProductCard from '../../components/CustomerProductCard';
 import {Link, useParams} from 'react-router-dom'
+import { server } from '../../utils';
 
 
 function convertToSlug(str) {
@@ -47,7 +48,7 @@ const BrowseProduct = (props) => {
       current: '1'
     });
     const [fetching, setFetching] = useState(true);
-    const [URL, setURL] = useState("http://localhost:5000/api/admin/products?limit=6");
+    const [URL, setURL] = useState(server + "admin/products?limit=8");
     const [slug, setSlug] = useState('');
     const [cardView, setCardView] = useBoolean();
     const [search, setSearch] = useState({
@@ -81,7 +82,7 @@ const BrowseProduct = (props) => {
         
         try {
           
-          const url = `http://localhost:5000/api/admin/products/suggestions?q=${search.current}`;
+          const url = server + `admin/products/suggestions?q=${search.current}`;
           const res = await axios.get(url);
           var results = (res.data.suggestions); 
           

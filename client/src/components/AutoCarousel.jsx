@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 import { Box, Image } from '@chakra-ui/react';
+import { imgs } from '../utils';
 
 const Carousel = (props) => {
   const [imgPath, setImgPath] = useState([]);
@@ -8,7 +9,7 @@ const Carousel = (props) => {
 
   useEffect(() => {
     // Create a new array with the image paths
-    const imgPaths = props.imageName.map((imageName) => `http://localhost:5000/images/${props.folderName}/${imageName}`);
+    const imgPaths = props.imageName.map((imageName) => imgs + `images/${props.folderName}/${imageName}`);
     setImgPath(imgPaths);
   }, [props.folderName, props.imageName]);
 

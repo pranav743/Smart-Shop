@@ -22,6 +22,7 @@ import axios from 'axios';
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom'
 import styles from '../Product/BrowseProduct.module.css';
+import { server } from '../../utils';
 
 
 function formatDateTime(dateTimeString) {
@@ -47,7 +48,7 @@ const Current_Orders = () => {
   
     const fetchUserDetails = async () => {
       try {
-          const url = "http://localhost:5000/api/client/afterauth";
+          const url = server + "client/afterauth";
           const response = await axios.post(url, {
               // data
           }, {

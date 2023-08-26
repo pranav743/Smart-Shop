@@ -3,17 +3,18 @@ import { Stack, Text, Button, Container, Flex } from '@chakra-ui/react';
 import CartItem from './CartItem';
 import axios from 'axios';
 import ConfirmOrder from './ConfirmOrder';
+import { server } from '../utils';
 
 
 export default function Cart() {
 
-    const [URL, setURL] = useState("http://localhost:5000/api/admin/products?_id=");
+    const [URL, setURL] = useState(server + "admin/products?_id=");
     const [user, setUser] = useState(false);
     const [products, setProducts] = useState(false);
 
     const fetchUserDetails = async () => {
         try {
-            const url = "http://localhost:5000/api/client/afterauth";
+            const url = server + "client/afterauth";
             const response = await axios.post(url, {
                 // data
             }, {
@@ -41,7 +42,7 @@ export default function Cart() {
           
          
           const encodedIds = arr.map((obj) => encodeURIComponent(obj.product_id)).join(',');
-          const url = `http://localhost:5000/api/admin/products/cartitems?_id=${encodedIds}`;
+          const url = server + `admin/products/cartitems?_id=${encodedIds}`;
           const res = await axios.get(url);
           var results = (res.data.data); 
           setProducts(results);

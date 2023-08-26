@@ -13,10 +13,12 @@ import {
   Heading,
   Text,
   useColorModeValue,
-  useToast
+  useToast,
+  Link
 } from '@chakra-ui/react';
 import axios from 'axios';
-import showToast from "./Toast"
+import showToast from "./Toast";
+import { server } from '../utils';
 
 export default function SimpleCard() {
   const [email, setEmail] = useState('');
@@ -39,7 +41,7 @@ export default function SimpleCard() {
         password: password
       }
 
-      const url = "http://localhost:5000/api/client/userauth"
+      const url = server + "client/userauth"
       const res = await axios.post(url, details) ;
       console.log(res);
       localStorage.setItem("tokenSmartShop", res.data.token);
@@ -96,7 +98,9 @@ export default function SimpleCard() {
                 align={'start'}
                 justify={'space-between'}>
                 <Checkbox>Remember me</Checkbox>
-                <Text color={'pink.400'}>Forgot password?</Text>
+                
+                <Text color={'pink.400'} onClick={()=>{window.location="/client/signup"}}>Already Have an Account?</Text>
+           
               </Stack>
               <Button
                 type="submit"

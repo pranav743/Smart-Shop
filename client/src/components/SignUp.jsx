@@ -17,6 +17,7 @@ import {
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { server } from '../utils';
 
 export default function SignupCard() {
   const [showPassword, setShowPassword] = useState(false);
@@ -45,7 +46,7 @@ export default function SignupCard() {
           }
         };
 
-        const url = "http://localhost:5000/api/client/registeruser"
+        const url = server + "client/registeruser"
         const res = await axios.post(url, user) ;
       
         localStorage.setItem("user_details", JSON.stringify({name: name, email: email}));
@@ -87,7 +88,7 @@ export default function SignupCard() {
         var details = {
           email: email
         }
-        const url = "http://localhost:5000/api/client/generateotp"
+        const url = server + "client/generateotp"
         const res = await axios.put(url, details);
         console.log(res);
         

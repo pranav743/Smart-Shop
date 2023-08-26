@@ -34,7 +34,11 @@ const searchProduct = require("./routes/searchProduct");
 
 // MiddleWare
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: '*',
+    methods: ["POST", "GET", "PUT", "DELETE"],
+    credentials: true
+}));
 app.use('/images', express.static(path.join(__dirname, 'imgs')));
 
 
@@ -67,7 +71,7 @@ connectDB();
 
 
 
-PORT = process.env.PORT || 5000;
+PORT = 5001;
 app.listen(PORT, (req, res) => {
     console.log(`Server running on Port ${PORT}`.yellow.bold);
 })

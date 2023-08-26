@@ -21,6 +21,7 @@ import {
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { FaStar } from 'react-icons/fa';
+import { server } from '../utils';
 
 
 function PostReview(props) {
@@ -41,7 +42,7 @@ function PostReview(props) {
 
     const fetchUserDetails = async () => {
     try {
-        const url = "http://localhost:5000/api/client/afterauth";
+        const url = server + "client/afterauth";
         const response = await axios.post(url, {
             // data
         }, {
@@ -70,7 +71,7 @@ function PostReview(props) {
 
     const addReview = async () => {
         try {
-        const url = `http://localhost:5000/api/client/review/add`;
+        const url = server + `client/review/add`;
         const res = await axios.post(url, {username: user.name, product_id: product_id, rating: rating, comment: comment, user_id: user._id});
         // console.log(res)
           window.location.reload();

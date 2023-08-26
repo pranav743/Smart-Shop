@@ -5,13 +5,15 @@ import {
 
   Image,
 } from '@chakra-ui/react'
+import { imgs } from '../utils';
+
 const Carousel = (props) => {
   const [imgPath, setImgPath] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
     // Create a new array with the image paths
-    const imgPaths = props.imageName.map((imageName) => `http://localhost:5000/images/${props.folderName}/${imageName}`);
+    const imgPaths = props.imageName.map((imageName) => imgs + `images/${props.folderName}/${imageName}`);
     setImgPath(imgPaths);
   }, [props.folderName, props.imageName]);
 

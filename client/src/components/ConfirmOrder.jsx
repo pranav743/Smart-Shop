@@ -23,6 +23,7 @@ import {
 import { TriangleDownIcon, EditIcon } from '@chakra-ui/icons';
 import axios from 'axios';
 import showToast from './Toast';
+import { server } from '../utils';
 
 function removeRupeeSign(inputString) {
   const stringWithoutRupeeSign = inputString.replace(/₹/g, '');
@@ -55,7 +56,7 @@ function ConfirmOrder(props) {
 
   const placeOrder = async () => {
     try {
-      const url = `http://localhost:5000/api/client/cart/move-all-to-current`;
+      const url = server + `client/cart/move-all-to-current`;
       const res = await axios.post(url, {user_id: user._id, payment_method: paymentMethod, address: address});
       window.location.reload();
     }
@@ -81,7 +82,7 @@ function ConfirmOrder(props) {
   const fetchUserDetails = async () => {
     try {
         console.log("Getting user")
-        const url = "http://localhost:5000/api/client/afterauth";
+        const url = server + "client/afterauth";
         const response = await axios.post(url, {
             // data
         }, {

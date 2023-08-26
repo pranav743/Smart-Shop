@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import styles from './Otp.module.css';
 import axios from 'axios';
-
+import { server } from '../utils';
 
 const Otp = () => {
 
@@ -64,7 +64,7 @@ const Otp = () => {
     const generateotp = async (e) => {
         try {
 
-            const url = "http://localhost:5000/api/generateotp"
+            const url = server + "generateotp"
             const res = await axios.put(url, userDetails);
             console.log(res);
             
@@ -81,7 +81,7 @@ const Otp = () => {
 
     const validateotp = async (e) => {
         try {
-            const url = "http://localhost:5000/api/client/validateotp"
+            const url = server + "client/validateotp"
             const res = await axios.post(url, {...userDetails, "otp": `${details.otp}`});
             console.log(res);
 

@@ -24,7 +24,8 @@ import {
 import { HamburgerIcon, CloseIcon, ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios'
+import axios from 'axios';
+import { server } from '../utils';
 
 export default function WithSubnavigation() {
 
@@ -37,7 +38,7 @@ export default function WithSubnavigation() {
 
   const fetchUserDetails = async () => {
     try {
-        const url = "http://localhost:5000/api/client/afterauth";
+        const url = server + "client/afterauth";
         const response = await axios.post(url, {
             // data
         }, {
@@ -303,7 +304,7 @@ const MobileNav = () => {
   );
 };
 
-const MobileNavItem = ({ label, children, href }) => {
+const MobileNavItem = ({ label, children, link }) => {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
@@ -311,7 +312,7 @@ const MobileNavItem = ({ label, children, href }) => {
       <Box
         py={2}
         as="a"
-        href={href ?? '#'}
+        href={link ?? '#'}
         justifyContent="space-between"
         alignItems="center"
         _hover={{
@@ -343,9 +344,11 @@ const MobileNavItem = ({ label, children, href }) => {
         >
           {children &&
             children.map((child) => (
+              <Link to={child.link}>
               <Box as="a" key={child.label} py={2} href={child.href}>
                 {child.label}
               </Box>
+              </Link>
             ))}
         </Stack>
       </Collapse>
