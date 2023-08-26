@@ -49,7 +49,7 @@ const BigCarousel = (props) => {
           <img src={imgPath[currentImageIndex]} alt="Not Found" style={{height: 'auto', width: '100%', maxHeight: '500px'}} onClick={setEnlarge.on}/>
       
       <div style={{ position: 'absolute', top: '50%', left: '0', right: '0', textAlign: 'center' }}>
-        <span style={{ marginRight: '390px', backgroundColor: '#000', padding: '10px 0px 15px 0', borderRadius: '20px', cursor: 'pointer' }}>
+        <span style={{ marginRight: '160px', backgroundColor: '#000', padding: '10px 0px 15px 0', borderRadius: '20px', cursor: 'pointer' }}>
         <ChevronLeftIcon boxSize='35px' color='#fff' onClick={goToPreviousImage}/>
         </span>
         <span style={{backgroundColor: '#000', padding: '10px 0px 15px 0', borderRadius: '20px', cursor: 'pointer'}}>

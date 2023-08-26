@@ -1,4 +1,2 @@
-export const server = "http://localhost:5001/api/"
-
-
-export const imgs = "http://localhost:5001/"
+export const server = "https://smart-shop-server-g0j49ei9c-pranav743.vercel.app/api/"
+export const imgs = "https://smart-shop-server-g0j49ei9c-pranav743.vercel.app/"
