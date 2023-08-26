@@ -10,28 +10,16 @@ export default function CaptionCarousel() {
     '/slide-show/home.png'
   ]);
   const [current, setCurrent] = useState(0);
-//   const [categories, setCategories] = useState([
-//     {
-//         category: "Fashion",
-//         img: '/slide-show/fashion.png',
-//         url: 'fashion'
-//     },
-//     {
-//         category: "Sports",
-//         img: '/slide-show/sports.png',
-//         url: '/sports-%26-outdoors'
-//     },
-//     {
-//         category: "Electronics",
-//         img: '/slide-show/electronics.png',
-//         url: '/electronics'
-//     },
-//     {
-//         category: "Home & Kitchen",
-//         img: '/slide-show/home.png',
-//         url: '/home-%26-kitchen'
-//     },
-//   ])
+  const [divHeight, setDivHeight] = useState(600); // Default height
+
+  const handleResize = () => {
+    // Set the height based on viewport width
+    if (window.innerWidth <= 768) {
+      setDivHeight(250);
+    } else {
+      setDivHeight(600);
+    }
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -39,26 +27,28 @@ export default function CaptionCarousel() {
       setCurrent((prevCurrent) => (prevCurrent + 1) % imgs.length);
     }, 5000); // Interval of 5 seconds
 
+    // Add event listener for window resize
+    window.addEventListener('resize', handleResize);
+    // Initial setup
+    handleResize();
+
     return () => {
-      // Clear the interval when the component is unmounted or re-rendered
+      // Clear the interval and remove the event listener when the component is unmounted or re-rendered
       clearInterval(interval);
+      window.removeEventListener('resize', handleResize);
     };
   }, [imgs.length]);
 
   return (
     <>
       <div
-      style={{
-        height: '600px', 
-        width: '100%', 
-        backgroundColor: '#000', 
-        position: 'relative',
-        /* Set height to 250px for phone screens */
-        '@media (max-width: 768px)': {
-          height: '250px',
-        }
-      }}
-    >
+        style={{
+          height: `${divHeight}px`, // Use the calculated height
+          width: '100%',
+          backgroundColor: '#000',
+          position: 'relative'
+        }}
+      >
         <img src={imgs[current]} alt="Not found" style={{ height: '100%', width: '100%' }} />
       </div>
 
