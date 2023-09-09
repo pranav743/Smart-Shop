@@ -16,8 +16,6 @@ const Carousel = (props) => {
     // Create a new array with the image paths
     // const imgPaths = props.imageName.map((imageName) => imgs + `images/${props.folderName}/${imageName}`);
     const imgPaths = props.imageName.map((imageName) => `imgs/${props.folderName}/${imageName}`);
-    console.log(imgPaths)
-
     setImgPath(imgPaths);
   }, [props.folderName, props.imageName]);
 
