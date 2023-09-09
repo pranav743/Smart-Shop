@@ -15,7 +15,7 @@ const Carousel = (props) => {
   useEffect(() => {
     // Create a new array with the image paths
     // const imgPaths = props.imageName.map((imageName) => imgs + `images/${props.folderName}/${imageName}`);
-    const imgPaths = props.imageName.map((imageName) => `../../imgs/${props.folderName}/${imageName}`);
+    const imgPaths = props.imageName.map((imageName) => `imgs/${props.folderName}/${imageName}`);
     console.log(imgPaths)
 
     setImgPath(imgPaths);
@@ -53,7 +53,7 @@ const Carousel = (props) => {
         height={230}
         width={282}
         objectFit={'cover'}
-        src={'client/imgs/adidas-xghosted-football-boots/1690260824139.jpg'}
+        src={imgPath[currentImageIndex]}
         alt="#"
       />
       <div style={{ position: 'absolute', top: '50%', left: '0', right: '0', textAlign: 'center' }}>
