@@ -53,7 +53,7 @@ const Carousel = (props) => {
         height={230}
         width={282}
         objectFit={'cover'}
-        src={imgPath[currentImageIndex]}
+        src={'client/imgs/adidas-xghosted-football-boots/1690260824139.jpg'}
         alt="#"
       />
       <div style={{ position: 'absolute', top: '50%', left: '0', right: '0', textAlign: 'center' }}>
