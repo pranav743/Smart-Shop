@@ -99,7 +99,7 @@ export default function SimpleCard() {
                 justify={'space-between'}>
                 <Checkbox>Remember me</Checkbox>
                 
-                <Text color={'pink.400'} onClick={()=>{window.location="/client/signup"}}>Already Have an Account?</Text>
+                <Text color={'pink.400'} onClick={()=>{window.location="/client/signup"}}>Don't have an Account?</Text>
            
               </Stack>
               <Button
