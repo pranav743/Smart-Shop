@@ -48,7 +48,7 @@ const BigCarousel = (props) => {
     <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '500px', width: '100%' }}>
       
         
-          <img src={imgPath[currentImageIndex]} alt="Not Found" style={{height: 'auto', width: '100%', maxHeight: '500px'}} onClick={setEnlarge.on}/>
+          <img src={`/slide-show/fashion.png`} alt="Not Found" style={{height: 'auto', width: '100%', maxHeight: '500px'}} onClick={setEnlarge.on}/>
       
       <div style={{ position: 'absolute', top: '50%', left: '0', right: '0', textAlign: 'center' }}>
         <span style={{ marginRight: '160px', backgroundColor: '#000', padding: '10px 0px 15px 0', borderRadius: '20px', cursor: 'pointer' }}>
