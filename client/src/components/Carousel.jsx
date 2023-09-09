@@ -15,7 +15,7 @@ const Carousel = (props) => {
   useEffect(() => {
     // Create a new array with the image paths
     // const imgPaths = props.imageName.map((imageName) => imgs + `images/${props.folderName}/${imageName}`);
-    const imgPaths = props.imageName.map((imageName) => `../../../server/imgs/${props.folderName}/${imageName}`);
+    const imgPaths = props.imageName.map((imageName) => `../../imgs/${props.folderName}/${imageName}`);
 
     setImgPath(imgPaths);
   }, [props.folderName, props.imageName]);
